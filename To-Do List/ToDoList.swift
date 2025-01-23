@@ -14,5 +14,13 @@ class ToDoList: ObservableObject {
                             ToDoItem(priority: "Medium", description: "Pick up clothes", dueDate: Date()),
                             
                             ToDoItem(priority: "Low", description: "Eat a donut", dueDate: Date())]
-    
+    init() {
+        if let data = UserDefaults.standard.data(forKey: "data") {
+            if let decodedData = try? JSONDecoder().decode([ToDoItem].self, from: data) {
+                items = decodedData
+                return
+            }
+        }
+        items = []
+    }
 }
