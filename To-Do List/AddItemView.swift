@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddItemView: View {
     @ObservedObject var toDoList: ToDoList
+    @State private var showingAddItemView = false
     @State private var priority = ""
     @State private var description = ""
     @State private var dueDate = Date()
@@ -21,6 +22,14 @@ struct AddItemView: View {
                     
                 }
             }
+            .navigationBarTitle("Add New To-Do Item", displayMode: .inline)
+            .sheet(isPresented: $showingAddItemView, content: {
+                AddItemView(toDoList: toDoList)
+            })
+            .navigationBarItems(leading: EditButton(), trailing: Button(action: { showingAddItemView = true }, label: { Image(systemName: "plus")
+            }))
+            TextField("Description", text: $description)
+            DatePicker("Due Date", selection: $dueDate, displayedComponents: .date)
         }
     }
 }
